@@ -1,5 +1,26 @@
 {
   "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
     "express-session": "^1.18.2"
-  }
+  },
+  "name": "extra_am",
+  "version": "1.0.0",
+  "description": "เมื่อไหร่เว็บจะเสร็จ\r ไม่ได้เขียนเว็บนานมากกกกกก",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sp4xs/ExTrA_AM.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sp4xs/ExTrA_AM/issues"
+  },
+  "homepage": "https://github.com/sp4xs/ExTrA_AM#readme"
 }
