@@ -1,160 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Dashboard</title>
-<link rel="stylesheet" href="style.css">
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f1f3f4;
-    margin: 0;
-    padding: 0;
-  }
-
+  body { margin: 0; font-family: Arial, sans-serif; background: #f8f9fa; }
   header {
-    background: #fff;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background: #fff; padding: 12px 16px; display: flex; justify-content: space-between;
+    align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
-
-  header h1 {
-    margin: 0;
-    font-size: 20px;
-  }
-
-  header a {
-    text-decoration: none;
-    color: #1a73e8;
-    font-weight: bold;
-    font-size: 14px;
-  }
+  header h1 { margin: 0; font-size: 18px; }
+  header a { color: #1a73e8; text-decoration: none; font-weight: bold; font-size: 14px; }
 
   #upload-section {
-    background: #fff;
-    margin: 15px 20px;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: none; background: #fff; margin: 12px 16px; padding: 12px;
+    border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
+  #upload-section h2 { margin: 0 0 10px 0; font-size: 16px; }
 
   #file-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 15px;
-    margin: 15px 20px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px; margin: 12px 16px;
   }
-
   .file-card {
-    background: #fff;
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-    font-size: 14px;
+    background: #fff; border-radius: 10px; padding: 10px; text-align: center;
+    cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.1s ease, box-shadow 0.1s ease; font-size: 14px;
   }
-
-  .file-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  }
-
-  .file-card button {
-    margin-top: 5px;
-    padding: 3px 6px;
-    font-size: 11px;
-    cursor: pointer;
-  }
+  .file-card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+  .file-card button { margin-top: 6px; padding: 4px 6px; font-size: 11px; cursor: pointer; }
 
   iframe {
-    width: 100%;
-    height: 400px;
-    border: none;
-    margin: 15px 20px;
-    display: none;
+    width: 100%; height: 420px; border: none; margin: 12px 16px; display: none;
+    background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
 
+  /* Watermark overlay */
+  .watermark {
+    position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px; color: rgba(0,0,0,0.10);
+    transform: rotate(-25deg); white-space: nowrap;
+    background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 140px);
+  }
+
+  /* Responsive tweaks */
   @media (max-width: 768px) {
-    #file-grid {
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 10px;
-      margin: 10px;
-    }
-
-    #upload-section {
-      margin: 10px;
-      padding: 10px;
-    }
-
-    iframe {
-      height: 300px;
-      margin: 10px;
-    }
-
-    header h1 {
-      font-size: 18px;
-    }
-
-    header a {
-      font-size: 12px;
-    }
+    header h1 { font-size: 16px; }
+    #file-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin: 10px; }
+    #upload-section { margin: 10px; padding: 10px; }
+    iframe { height: 320px; margin: 10px; }
   }
-
   @media (max-width: 480px) {
-    #file-grid {
-      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-      gap: 8px;
-      margin: 8px;
-    }
-
-    #upload-section {
-      margin: 8px;
-      padding: 8px;
-    }
-
-    iframe {
-      height: 250px;
-      margin: 8px;
-    }
-
-    header h1 {
-      font-size: 16px;
-    }
-
-    header a {
-      font-size: 11px;
-    }
-
-    .file-card {
-      font-size: 12px;
-      padding: 8px;
-    }
-
-    .file-card button {
-      font-size: 10px;
-      padding: 2px 4px;
-    }
+    header h1 { font-size: 15px; }
+    header a { font-size: 12px; }
+    #file-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin: 8px; }
+    #upload-section { margin: 8px; padding: 8px; }
+    iframe { height: 260px; margin: 8px; }
+    .file-card { font-size: 12px; padding: 8px; }
+    .file-card button { font-size: 10px; padding: 3px 5px; }
   }
 </style>
 </head>
 <body>
-
 <header>
-  <h1>My Drive</h1>
+  <h1>AM extra</h1>
   <a href="/logout">Logout</a>
 </header>
 
-<!-- Upload Section (Dev only) -->
-<div id="upload-section" style="display:none;">
+<!-- Dev-only Upload -->
+<div id="upload-section">
   <h2>Upload File</h2>
   <form id="upload-form" enctype="multipart/form-data">
-    <input type="file" name="file" required>
+    <input type="file" name="file" required />
     <button type="submit">Upload</button>
   </form>
   <p id="upload-status"></p>
@@ -163,8 +82,11 @@
 <!-- File Grid -->
 <div id="file-grid"></div>
 
-<!-- File Viewer -->
+<!-- Inline Viewer (no download) -->
 <iframe id="file-viewer"></iframe>
+
+<!-- Watermark -->
+<div class="watermark" id="watermark">Confidential</div>
 
 <script>
 const fileGrid = document.getElementById("file-grid");
@@ -172,39 +94,49 @@ const viewer = document.getElementById("file-viewer");
 const uploadSection = document.getElementById("upload-section");
 const uploadForm = document.getElementById("upload-form");
 const uploadStatus = document.getElementById("upload-status");
+const watermark = document.getElementById("watermark");
 
-// Fetch session info once
-let userRole = null;
-fetch("/session")
-  .then(res => res.json())
+let role = null;
+let username = "";
+
+// 1) Get current user (for watermark + role)
+fetch("/me")
+  .then(r => r.json())
   .then(data => {
-    userRole = data.role;
-    if (userRole === "dev") uploadSection.style.display = "block";
+    username = data.username || "";
+    role = data.role || "user";
+    watermark.textContent = `Confidential — ${username}`;
+    if (role === "dev") uploadSection.style.display = "block";
     loadFiles();
-  });
+  })
+  .catch(() => window.location.href = "/login.html");
 
-// Load files from backend
+// 2) Load files and render cards
 function loadFiles() {
-  fetch("/files")
-    .then(res => res.json())
+    fetch("/files")
+    .then(r => r.json())
     .then(files => {
       fileGrid.innerHTML = "";
       files.forEach(file => {
         const card = document.createElement("div");
         card.className = "file-card";
+        card.textContent = file;
+        fileGrid.appendChild(card);
 
-        const nameSpan = document.createElement("span");
+
+        const nameSpan = document.createElement("div");
         nameSpan.textContent = file;
         card.appendChild(nameSpan);
 
+        // Open inline (no direct link)
         card.onclick = () => {
-          viewer.src = "/view/" + file;
+          viewer.src = "/view/" + encodeURIComponent(file);
           viewer.style.display = "block";
-          window.scrollTo({ top: viewer.offsetTop, behavior: 'smooth' });
+          window.scrollTo({ top: viewer.offsetTop, behavior: "smooth" });
         };
 
         // Dev controls
-        if (userRole === "dev") {
+        if (role === "dev") {
           const controls = document.createElement("div");
 
           const delBtn = document.createElement("button");
@@ -212,29 +144,27 @@ function loadFiles() {
           delBtn.onclick = (e) => {
             e.stopPropagation();
             if (confirm("Delete this file?")) {
-              fetch("/file/" + file, { method: "DELETE" })
-                .then(res => res.text())
-                .then(msg => { alert(msg); loadFiles(); });
+              fetch("/file/" + encodeURIComponent(file), { method: "DELETE" })
+                .then(r => r.text()).then(msg => { alert(msg); loadFiles(); });
             }
           };
           controls.appendChild(delBtn);
 
-          const renameBtn = document.createElement("button");
-          renameBtn.textContent = "Rename";
-          renameBtn.onclick = (e) => {
+          const renBtn = document.createElement("button");
+          renBtn.textContent = "Rename";
+          renBtn.style.marginLeft = "6px";
+          renBtn.onclick = (e) => {
             e.stopPropagation();
             const newName = prompt("Enter new file name:", file);
-            if (newName) {
-              fetch("/file/" + file, {
+            if (newName && newName.trim()) {
+              fetch("/file/" + encodeURIComponent(file), {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ newName })
-              })
-                .then(res => res.text())
-                .then(msg => { alert(msg); loadFiles(); });
+              }).then(r => r.text()).then(msg => { alert(msg); loadFiles(); });
             }
           };
-          controls.appendChild(renameBtn);
+          controls.appendChild(renBtn);
 
           card.appendChild(controls);
         }
@@ -244,16 +174,25 @@ function loadFiles() {
     });
 }
 
-// Handle file upload
-uploadForm.addEventListener("submit", e => {
-  e.preventDefault();
-  const formData = new FormData(uploadForm);
-  fetch("/upload", { method: "POST", body: formData })
-    .then(res => res.text())
-    .then(msg => { uploadStatus.textContent = msg; uploadForm.reset(); loadFiles(); })
-    .catch(err => uploadStatus.textContent = "Upload failed");
+// 3) Handle uploads (dev)
+if (uploadForm) {
+  uploadForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(uploadForm);
+    fetch("/upload", { method: "POST", body: fd })
+      .then(r => r.text())
+      .then(msg => { uploadStatus.textContent = msg; uploadForm.reset(); loadFiles(); })
+      .catch(() => uploadStatus.textContent = "Upload failed");
+  });
+}
+
+// 4) Make casual copying harder (cannot fully block screenshots)
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("keydown", e => {
+  const k = e.key.toLowerCase();
+  if (e.ctrlKey && ["s","u","p","c"].includes(k)) { e.preventDefault(); alert("Action disabled"); }
+  if (k === "printscreen") { e.preventDefault(); alert("Screenshots are discouraged"); }
 });
 </script>
-
 </body>
 </html>

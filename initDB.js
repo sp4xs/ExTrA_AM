@@ -1,35 +1,40 @@
 // initDB.js
 const sqlite3 = require("sqlite3").verbose();
-const bcrypt = require("bcrypt");
+const db = new sqlite3.Database("database.db");
 
-const db = new sqlite3.Database("./database.db");
+// Create users table if not exists
+db.run(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE,
+    password TEXT,
+    role TEXT CHECK(role IN ('dev', 'user'))
+  )
+`, (err) => {
+  if (err) {
+    console.error("Error creating table:", err);
+    return;
+  }
 
-// Create users table
-db.serialize(() => {
-  db.run("DROP TABLE IF EXISTS users"); // reset each time you run
-  db.run(`
-    CREATE TABLE users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT UNIQUE,
-      password TEXT,
-      role TEXT
-    )
-  `);
+  console.log("Users table ready.");
 
-  // Insert example users
-  const insert = db.prepare("INSERT INTO users (username, password, role) VALUES (?, ?, ?)");
+  // Insert default users safely
+  const defaultUsers = [
+    { username: "admin", password: "1234", role: "dev" },
+    { username: "user", password: "1234", role: "user" }
+  ];
 
-  // Developer (admin) user
-  bcrypt.hash("dev123", 10, (err, hash) => {
-    insert.run("admin", hash, "dev");
+  defaultUsers.forEach(user => {
+    db.run(
+      "INSERT OR IGNORE INTO users (username, password, role) VALUES (?, ?, ?)",
+      [user.username, user.password, user.role],
+      (err) => {
+        if (err) console.error(`Failed to add user ${user.username}:`, err);
+        else console.log(`User ${user.username} ready.`);
+      }
+    );
   });
-
-  // Normal user
-  bcrypt.hash("user123", 10, (err, hash) => {
-    insert.run("alice", hash, "user");
-  });
-
-  insert.finalize();
 });
 
+// Close DB after all inserts
 db.close();
